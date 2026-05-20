@@ -113,7 +113,7 @@ export default function Services() {
             Sistemas sofisticados de controle <br className="hidden sm:inline" />
             <span className="italic text-brand-gold font-normal lowercase">de iluminação e bem-estar.</span>
           </h2>
-          <div className="w-[80px] h-[1px] bg-brand-gold/40 mt-8" />
+
         </div>
 
         {/* Asymmetrical Grid of Service Cards */}

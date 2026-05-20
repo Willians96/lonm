@@ -41,7 +41,7 @@ export default function FinalCTA() {
               className="object-contain"
             />
           </div>
-          <div className="h-[30px] w-[1px] bg-brand-gold/20 mt-4" />
+        
         </motion.div>
 
         {/* Cinematic core message */}
