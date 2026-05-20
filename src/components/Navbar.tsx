@@ -61,7 +61,7 @@ export default function Navbar() {
                 LONM DECOR
               </span>
               <span className="text-[9px] tracking-[0.4em] text-brand-gold font-light uppercase mt-1">
-                Persianas Premium
+                Persianas Rolô
               </span>
             </div>
           </Link>

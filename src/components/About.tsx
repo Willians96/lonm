@@ -97,7 +97,7 @@ export default function About() {
             {/* Soft sunlight filter overlay */}
             <div className="absolute inset-0 bg-brand-gold/5 group-hover:bg-brand-gold/0 transition-colors duration-700 z-10 pointer-events-none" />
             <Image
-              src="/images/gallery/WhatsApp Image 2026-05-20 at 11.38.55 (2).jpeg"
+              src="/images/gallery/new.jpeg"
               alt="Instalação residencial sofisticada LONM DECOR"
               fill
               sizes="(max-width: 1024px) 100vw, 40vw"

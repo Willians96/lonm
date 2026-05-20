@@ -43,7 +43,7 @@ export default function Footer() {
                   LONM DECOR
                 </span>
                 <span className="text-[8px] tracking-[0.4em] text-brand-gold font-light uppercase mt-1">
-                  Persianas Premium
+                  Persianas Rolô
                 </span>
               </div>
             </Link>

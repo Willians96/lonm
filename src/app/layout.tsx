@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   keywords: [
     "instalação de persianas",
     "persianas sob medida",
-    "persianas premium",
+    "persianas rolô",
     "cortinas modernas",
     "persianas motorizadas",
     "persiana rolo",

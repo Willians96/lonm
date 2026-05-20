@@ -66,7 +66,7 @@ export default function Gallery() {
       aspect: "aspect-square md:h-[280px]"
     },
     {
-      src: "/images/gallery/WhatsApp Image 2026-05-20 at 11.38.55 (2).jpeg",
+      src: "/images/gallery/new.jpeg",
       title: "Varanda Integrada",
       subtitle: "Fechamento Completo em Persiana Rolô",
       span: "md:col-span-1 md:row-span-1",
