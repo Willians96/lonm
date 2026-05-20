@@ -101,7 +101,7 @@ export default function Gallery() {
               Nosso Portfólio
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light tracking-wide uppercase">
-              Projetos Realizados e <br />
+              Projetos Realizados <br />
               <span className="italic text-[#7C6235] font-normal lowercase">ambientes transformados.</span>
             </h2>
           </div>
