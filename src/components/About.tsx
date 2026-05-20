@@ -73,15 +73,20 @@ export default function About() {
               </div>
               <div>
                 <h4 className="font-serif text-3xl font-light text-[#7C6235] tracking-wide">Modelos</h4>
-                <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold mt-2">
-                  Translúcidas, Blackout, Double Visiun
-                </p>
+                <div className="flex flex-col gap-1 mt-2">
+                  <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold">Translúcidas</p>
+                  <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold">Blackout</p>
+                  <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold">Double Visiun</p>
+                </div>
               </div>
               <div>
                 <h4 className="font-serif text-3xl font-light text-[#7C6235] tracking-wide">Comando</h4>
-                <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold mt-2">
-                  Manual, Automático RF, Wi-Fi, Alexa
-                </p>
+                <div className="flex flex-col gap-1 mt-2">
+                  <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold">Manual</p>
+                  <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold">Automático RF</p>
+                  <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold">Wi-Fi</p>
+                  <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold">Alexa</p>
+                </div>
               </div>
             </div>
           </motion.div>
