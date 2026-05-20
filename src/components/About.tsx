@@ -72,15 +72,15 @@ export default function About() {
                 </p>
               </div>
               <div>
-                <h4 className="font-serif text-3xl font-light text-[#7C6235] tracking-wide">75% / 25%</h4>
+                <h4 className="font-serif text-3xl font-light text-[#7C6235] tracking-wide">Modelos</h4>
                 <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold mt-2">
-                  Poliéster & PVC Screen
+                  Translúcidas, Blackout, Double Visiun
                 </p>
               </div>
               <div>
-                <h4 className="font-serif text-3xl font-light text-[#7C6235] tracking-wide">Smart</h4>
+                <h4 className="font-serif text-3xl font-light text-[#7C6235] tracking-wide">Comando</h4>
                 <p className="text-xs tracking-[0.15em] text-brand-black/80 uppercase font-semibold mt-2">
-                  Wi-Fi, Alexa & Manual
+                  Manual, Automático RF, Wi-Fi, Alexa
                 </p>
               </div>
             </div>
