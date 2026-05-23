@@ -46,7 +46,7 @@ export default function Services() {
       title: "Persianas Rolô Translúcidas",
       subtitle: "Tela Screen 1% e 3%",
       desc: "Desenvolvidas em material nobre (75% poliéster e 25% PVC), as telas Screen regulam a entrada solar com precisão, reduzem o calor e mantêm a privacidade sem perder a vista do horizonte.",
-      image: "/images/translucent/WhatsApp Image 2026-05-20 at 11.38.56 (2).jpeg",
+      image: "/images/translucent/Translucidas.jpeg",
       icon: <Eye className="w-5 h-5 text-brand-gold" />,
       spec: "Redução de até 90% dos raios UV"
     },
