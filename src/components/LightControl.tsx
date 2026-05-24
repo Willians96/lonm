@@ -3,11 +3,51 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Sun, Sunset } from "lucide-react";
+import { client, urlFor } from "@/lib/sanity";
+import type { SanityImageSource } from "@sanity/image-url";
+
+interface LightControlData {
+  sectionTitle: string;
+  sectionDescription: string;
+  beforeImage: SanityImageSource | null;
+  beforeLabel: string;
+  afterImage: SanityImageSource | null;
+  afterLabel: string;
+}
+
+const QUERY = `*[_type == "lightControl" && _id == "lightControlSingleton"][0] {
+  sectionTitle, sectionDescription, beforeImage, beforeLabel, afterImage, afterLabel
+}`;
+
+const FALLBACK: LightControlData = {
+  sectionTitle: "Do sol escaldante à penumbra perfeita.",
+  sectionDescription: "Arraste o cursor central na imagem abaixo para simular a atenuação solar térmica de até 90% obtida pelas nossas persianas inteligentes, criando frescor e bem-estar.",
+  beforeImage: null,
+  beforeLabel: "Sol Direto & Calor Excessivo",
+  afterImage: null,
+  afterLabel: "Luz Suave & Térmica (LONM DECOR)",
+};
+
 
 export default function LightControl() {
-  const [sliderPosition, setSliderPosition] = useState(50); // percentage
+  const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [data, setData] = useState<LightControlData>(FALLBACK);
+
+  useEffect(() => {
+    client.fetch<LightControlData>(QUERY).then((res) => {
+      if (res) setData(res);
+    });
+  }, []);
+
+  const beforeSrc = data.beforeImage
+    ? urlFor(data.beforeImage).width(1600).url()
+    : "/images/gallery/WhatsApp Image 2026-05-20 at 11.38.54 (1).jpeg";
+
+  const afterSrc = data.afterImage
+    ? urlFor(data.afterImage).width(1600).url()
+    : "/images/gallery/WhatsApp Image 2026-05-20 at 11.38.55.jpeg";
 
   const handleMove = (clientX: number) => {
     if (!containerRef.current) return;
@@ -62,10 +102,13 @@ export default function LightControl() {
             A Experiência do Controle
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light tracking-wide uppercase">
-            Do sol escaldante à <span className="italic text-brand-gold font-normal lowercase">penumbra perfeita.</span>
+            {data.sectionTitle.split("à")[0]}à{" "}
+            <span className="italic text-brand-gold font-normal lowercase">
+              {data.sectionTitle.split("à")[1] ?? "penumbra perfeita."}
+            </span>
           </h2>
           <p className="text-xs sm:text-sm text-brand-cream/70 font-light mt-6 max-w-xl mx-auto leading-relaxed">
-            Arraste o cursor central na imagem abaixo para simular a atenuação solar térmica de até 90% obtida pelas nossas persianas inteligentes, criando frescor e bem-estar.
+            {data.sectionDescription}
           </p>
         </div>
 
@@ -79,17 +122,17 @@ export default function LightControl() {
           {/* Lado B (Depois) - Penumbra Harmoniosa */}
           <div className="absolute inset-0 w-full h-full">
             <Image
-              src="/images/gallery/WhatsApp Image 2026-05-20 at 11.38.55.jpeg"
+              src={afterSrc}
               alt="Ambiente com luz controlada e persiana sob medida"
               fill
               sizes="100vw"
               className="object-cover pointer-events-none"
               priority
+              unoptimized={!!data.afterImage}
             />
-            {/* Tag Badge */}
             <div className="absolute bottom-6 right-6 z-20 px-3 py-1.5 glass-panel rounded-xs flex items-center gap-2 border border-brand-gold/25 font-light text-[9px] tracking-wider uppercase text-brand-gold">
               <Sunset className="w-3.5 h-3.5" />
-              Luz Suave & Térmica (LONM DECOR)
+              {data.afterLabel}
             </div>
           </div>
 
@@ -99,17 +142,17 @@ export default function LightControl() {
             style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
           >
             <Image
-              src="/images/gallery/WhatsApp Image 2026-05-20 at 11.38.54 (1).jpeg"
+              src={beforeSrc}
               alt="Ambiente exposto a sol forte sem controle térmico"
               fill
               sizes="100vw"
               className="object-cover pointer-events-none"
               priority
+              unoptimized={!!data.beforeImage}
             />
-            {/* Tag Badge */}
             <div className="absolute bottom-6 left-6 z-20 px-3 py-1.5 bg-brand-cream/80 backdrop-blur-md rounded-xs flex items-center gap-2 border border-brand-black/15 font-light text-[9px] tracking-wider uppercase text-brand-black">
               <Sun className="w-3.5 h-3.5 text-orange-500" />
-              Sol Direto & Calor Excessivo
+              {data.beforeLabel}
             </div>
           </div>
 

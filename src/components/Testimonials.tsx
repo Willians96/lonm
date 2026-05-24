@@ -1,40 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { client } from "@/lib/sanity";
+
+interface SanityTestimonial {
+  _id: string;
+  order: number;
+  quote: string;
+  authorName: string;
+  city: string;
+  project: string;
+}
+
+const QUERY = `*[_type == "testimonial"] | order(order asc) {
+  _id, order, quote, authorName, city, project
+}`;
+
+// Fallback while Sanity loads
+const fallback: SanityTestimonial[] = [
+  {
+    _id: "f1",
+    order: 1,
+    quote: "O atendimento da LONM DECOR é impecável. Desde a consultoria técnica para escolher a tela Screen 3% ideal para nossa sacada, até a instalação a laser com precisão milimétrica. O resultado superou nossas expectativas, transformou o apartamento por completo!",
+    authorName: "Mariana Mendes",
+    city: "Campinas - SP",
+    project: "Sacada Integrada com Persiana Rolô Translúcida",
+  },
+  {
+    _id: "f2",
+    order: 2,
+    quote: "Decidimos automatizar todas as persianas blackout do quarto principal e a integração com a Alexa ficou maravilhosa. Acordar com a abertura gradual da luz é outro nível de conforto. A equipe técnica foi extremamente profissional, limpa e pontual.",
+    authorName: "Dr. Ricardo Silveira",
+    city: "Sorocaba - SP",
+    project: "Dormitórios Master com Persianas Blackout Motorizadas",
+  },
+  {
+    _id: "f3",
+    order: 3,
+    quote: "A qualidade do tecido e dos componentes é visível de longe. As persianas Double Vision que instalei na sala de jantar trouxeram uma sofisticação indescritível. O controle térmico funciona de verdade; a sala ficou muito mais fresca nos dias quentes.",
+    authorName: "Patrícia Alencar",
+    city: "Sorocaba - SP",
+    project: "Sala de Jantar Social com Double Vision Sob Medida",
+  },
+];
 
 export default function Testimonials() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [testimonials, setTestimonials] = useState<SanityTestimonial[]>(fallback);
 
-  const testimonials = [
-    {
-      quote: "O atendimento da LONM DECOR é impecável. Desde a consultoria técnica para escolher a tela Screen 3% ideal para nossa sacada, até a instalação a laser com precisão milimétrica. O resultado superou nossas expectativas, transformou o apartamento por completo!",
-      author: "Mariana Mendes",
-      location: "Campinas - SP",
-      project: "Sacada Integrada com Persiana Rolô Translúcida"
-    },
-    {
-      quote: "Decidimos automatizar todas as persianas blackout do quarto principal e a integração com a Alexa ficou maravilhosa. Acordar com a abertura gradual da luz é outro nível de conforto. A equipe técnica foi extremamente profissional, limpa e pontual.",
-      author: "Dr. Ricardo Silveira",
-      location: "Sorocaba - SP",
-      project: "Dormitórios Master com Persianas Blackout Motorizadas"
-    },
-    {
-      quote: "A qualidade do tecido e dos componentes é visível de longe. As persianas Double Vision que instalei na sala de jantar trouxeram uma sofisticação indescritível. O controle térmico funciona de verdade; a sala ficou muito mais fresca nos dias quentes.",
-      author: "Patrícia Alencar",
-      location: "Sorocaba - SP",
-      project: "Sala de Jantar Social com Double Vision Sob Medida"
-    }
-  ];
+  useEffect(() => {
+    client.fetch<SanityTestimonial[]>(QUERY).then((data) => {
+      if (data && data.length > 0) setTestimonials(data);
+    });
+  }, []);
 
-  const handleNext = () => {
-    setActiveIdx((prev) => (prev + 1) % testimonials.length);
-  };
+  const handleNext = () => setActiveIdx((prev) => (prev + 1) % testimonials.length);
+  const handlePrev = () => setActiveIdx((prev) => (prev - 1 + testimonials.length) % testimonials.length);
 
-  const handlePrev = () => {
-    setActiveIdx((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
+  const current = testimonials[activeIdx];
 
   return (
     <section
@@ -48,7 +73,7 @@ export default function Testimonials() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
-        
+
         {/* Monogram header */}
         <div className="flex flex-col items-center mb-10 text-center">
           <span className="text-[10px] tracking-[0.3em] text-[#7C6235] font-semibold uppercase mb-4">
@@ -68,7 +93,7 @@ export default function Testimonials() {
 
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeIdx}
+              key={current._id}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
@@ -76,15 +101,15 @@ export default function Testimonials() {
               className="flex flex-col items-center"
             >
               <blockquote className="font-serif text-xl sm:text-2xl md:text-3xl font-light leading-relaxed text-brand-black/95 text-balance max-w-4xl">
-                “{testimonials[activeIdx].quote}”
+                "{current.quote}"
               </blockquote>
-              
+
               <div className="mt-8 flex flex-col items-center">
                 <span className="text-sm font-semibold tracking-wider text-brand-black">
-                  {testimonials[activeIdx].author}
+                  {current.authorName}
                 </span>
                 <span className="text-xs tracking-[0.15em] text-brand-black/75 uppercase font-medium mt-1.5">
-                  {testimonials[activeIdx].location} · <span className="text-brand-gold font-semibold">{testimonials[activeIdx].project}</span>
+                  {current.city} · <span className="text-brand-gold font-semibold">{current.project}</span>
                 </span>
               </div>
             </motion.div>
@@ -100,8 +125,7 @@ export default function Testimonials() {
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
-          
-          {/* Numbers pagination indicator */}
+
           <div className="font-serif text-sm text-brand-gold tracking-widest font-medium">
             {activeIdx + 1} <span className="text-brand-black/60 font-sans">/</span> {testimonials.length}
           </div>
