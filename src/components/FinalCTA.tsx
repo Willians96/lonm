@@ -3,8 +3,11 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { MessageSquare } from "lucide-react";
+import { useModal } from "@/lib/ModalContext";
 
 export default function FinalCTA() {
+  const { openOrcamento } = useModal();
+
   const handleWhatsAppClick = () => {
     window.open("https://wa.me/5515974018511", "_blank");
   };
@@ -76,11 +79,11 @@ export default function FinalCTA() {
           className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full sm:w-auto"
         >
           <button
-            onClick={handleWhatsAppClick}
+            onClick={openOrcamento}
             className="w-full sm:w-auto px-10 py-5 bg-brand-gold text-brand-dark text-xs tracking-[0.25em] uppercase rounded-sm font-bold hover:bg-brand-cream hover:text-brand-dark transition-all duration-500 flex items-center justify-center gap-3 cursor-pointer shadow-xl shadow-brand-gold/15"
           >
             <MessageSquare className="w-4.5 h-4.5" />
-            Agendar Visita Técnica
+            Solicitar Orçamento
           </button>
           
           <button

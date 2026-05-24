@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { Menu, X, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useModal } from "@/lib/ModalContext";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { openOrcamento } = useModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,7 +84,7 @@ export default function Navbar() {
           {/* CTA Button */}
           <div className="hidden md:block">
             <button
-              onClick={handleWhatsAppClick}
+              onClick={openOrcamento}
               className="px-5 py-2.5 border border-brand-gold/45 text-brand-gold text-[10px] tracking-[0.2em] uppercase rounded-sm hover:bg-brand-gold hover:text-brand-dark hover:border-brand-gold transition-all duration-500 flex items-center gap-2 cursor-pointer font-medium"
             >
               <MessageSquare className="w-3.5 h-3.5" />
@@ -136,12 +138,12 @@ export default function Navbar() {
           <button
             onClick={() => {
               setIsMobileMenuOpen(false);
-              handleWhatsAppClick();
+              openOrcamento();
             }}
             className="mt-6 px-8 py-3 bg-brand-gold text-brand-dark text-xs tracking-[0.2em] uppercase rounded-sm hover:bg-brand-cream hover:text-brand-dark transition-all duration-300 flex items-center gap-2 font-bold cursor-pointer"
           >
             <MessageSquare className="w-4.5 h-4.5" />
-            WhatsApp Orçamento
+            Solicitar Orçamento
           </button>
         </nav>
       </div>

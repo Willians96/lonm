@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import { ModalProvider } from "@/lib/ModalContext";
+import OrcamentoModalWrapper from "@/components/OrcamentoModalWrapper";
 
 // Luxury editorial font for titles
 const cormorant = Cormorant_Garamond({
@@ -90,12 +92,18 @@ export default function RootLayout({
         {/* Luxury film grain/noise effect */}
         <div className="noise-overlay" />
         
-        {/* Smooth scrolling wrapper */}
-        <SmoothScroll>
-          <div className="relative flex flex-col flex-grow">
-            {children}
-          </div>
-        </SmoothScroll>
+        {/* Modal Provider wraps everything */}
+        <ModalProvider>
+          {/* Smooth scrolling wrapper */}
+          <SmoothScroll>
+            <div className="relative flex flex-col flex-grow">
+              {children}
+            </div>
+          </SmoothScroll>
+
+          {/* Global Orçamento Modal */}
+          <OrcamentoModalWrapper />
+        </ModalProvider>
       </body>
     </html>
   );
