@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { MessageSquare, MapPin } from "lucide-react";
+import { MessageSquare, MapPin, Mail } from "lucide-react";
 
 export default function Footer() {
   const handleWhatsAppClick = () => {
@@ -126,6 +126,14 @@ export default function Footer() {
                   Clientes Reais
                 </a>
               </li>
+              <li>
+                <a
+                  href="https://www.lonmdecor.com.br/studio"
+                  className="hover:text-brand-gold transition-colors duration-300 font-medium"
+                >
+                  Painel Administrativo
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -157,6 +165,12 @@ export default function Footer() {
                 </svg>
                 <span>Instagram: @lonm_decor</span>
               </li>
+              <li className="flex items-start gap-3">
+                <Mail className="w-4 h-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                <a href="mailto:lonmservice@gmail.com" className="hover:text-brand-gold transition-colors duration-300">
+                  lonmservice@gmail.com
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -165,12 +179,16 @@ export default function Footer() {
         {/* Bottom copyright details */}
         <div className="mt-16 pt-8 border-t border-brand-cream/5 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] tracking-widest text-brand-cream/35 uppercase font-light">
           <p>© {new Date().getFullYear()} LONM DECOR. Todos os direitos reservados.</p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6">
             <Link href="https://www.lonmdecor.com.br" className="hover:text-brand-gold transition-colors">
               www.lonmdecor.com.br
             </Link>
             <span className="hidden sm:inline">|</span>
             <span>CNPJ: Sob medida para sua casa</span>
+            <span className="hidden sm:inline">|</span>
+            <Link href="https://www.lonmdecor.com.br/studio" className="hover:text-brand-gold transition-colors">
+              Painel Administrativo
+            </Link>
           </div>
         </div>
       </div>
