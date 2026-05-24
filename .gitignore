@@ -42,7 +42,6 @@ next-env.d.ts
 
 # developer scratch and tools
 /scratch/
-/skills/
 
 # Sanity token (never commit!)
 token sanity.txt
