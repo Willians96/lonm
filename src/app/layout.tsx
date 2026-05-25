@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import { ModalProvider } from "@/lib/ModalContext";
 import OrcamentoModalWrapper from "@/components/OrcamentoModalWrapper";
+import { Toaster } from "react-hot-toast";
 
 // Luxury editorial font for titles
 const cormorant = Cormorant_Garamond({
@@ -103,6 +104,26 @@ export default function RootLayout({
 
           {/* Global Orçamento Modal */}
           <OrcamentoModalWrapper />
+
+          {/* Global Toast Notifications */}
+          <Toaster 
+            position="bottom-right"
+            toastOptions={{
+              duration: 5000,
+              style: {
+                background: '#131312',
+                color: '#f0ece4',
+                border: '1px solid rgba(201, 168, 76, 0.3)',
+                fontSize: '14px',
+              },
+              success: {
+                iconTheme: {
+                  primary: '#C9A84C',
+                  secondary: '#131312',
+                },
+              },
+            }}
+          />
         </ModalProvider>
       </body>
     </html>

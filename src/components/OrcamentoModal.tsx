@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { X, Plus, Trash2, ChevronDown, Send, CheckCircle, Loader2 } from "lucide-react";
+import { X, Plus, Trash2, ChevronDown, Send, Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -220,11 +221,15 @@ export default function OrcamentoModal({
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Erro desconhecido.");
-      setStatus("success");
+      
+      setStatus("idle");
+      toast.success("Orçamento enviado com sucesso! Entraremos em contato em breve.");
+      onClose();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Erro ao enviar.";
       setErrorMsg(message);
       setStatus("error");
+      toast.error(message);
     }
   };
 
@@ -271,34 +276,12 @@ export default function OrcamentoModal({
           </button>
         </div>
 
-        {/* ── SUCCESS STATE ── */}
-        {status === "success" ? (
-          <div className="flex flex-col items-center justify-center gap-5 px-6 py-16 text-center">
-            <div className="w-16 h-16 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
-              <CheckCircle className="w-7 h-7 text-brand-gold" />
-            </div>
-            <div>
-              <h3 className="font-serif text-2xl text-brand-cream font-light mb-2">
-                Orçamento enviado!
-              </h3>
-              <p className="text-sm text-brand-cream/60 font-light leading-relaxed max-w-xs">
-                Recebemos sua solicitação e entraremos em contato em breve para confirmar os detalhes.
-              </p>
-            </div>
-            <button
-              onClick={onClose}
-              className="mt-2 px-8 py-3 bg-brand-gold text-brand-dark text-[10px] tracking-[0.25em] uppercase font-semibold rounded-sm hover:bg-brand-cream transition-all duration-300 cursor-pointer"
-            >
-              Fechar
-            </button>
-          </div>
-        ) : (
-          /* ── FORM ── */
-          <form onSubmit={handleSubmit} className="flex flex-col gap-0">
-            <div className="px-6 py-6 flex flex-col gap-5">
+        {/* ── FORM ── */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-0">
+          <div className="px-6 py-6 flex flex-col gap-5">
 
-              {/* Seção: Dados pessoais */}
-              <div>
+            {/* Seção: Dados pessoais */}
+            <div>
                 <p className="text-[9px] tracking-[0.35em] uppercase text-brand-gold font-light mb-4">
                   Dados do Cliente
                 </p>
@@ -451,7 +434,6 @@ export default function OrcamentoModal({
               </p>
             </div>
           </form>
-        )}
       </div>
     </div>
   );
