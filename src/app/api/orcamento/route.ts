@@ -155,7 +155,9 @@ export async function POST(req: Request) {
     }
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
@@ -170,8 +172,15 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[ORCAMENTO API]", err);
-    return NextResponse.json({ error: "Erro ao enviar e-mail." }, { status: 500 });
+    return NextResponse.json(
+      { 
+        error: "Erro ao enviar e-mail.", 
+        details: err?.message || String(err),
+        code: err?.code
+      }, 
+      { status: 500 }
+    );
   }
 }
