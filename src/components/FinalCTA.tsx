@@ -9,7 +9,7 @@ export default function FinalCTA() {
   const { openOrcamento } = useModal();
 
   const handleWhatsAppClick = () => {
-    window.open("https://wa.me/5515974018511", "_blank");
+    window.open("https://wa.me/5515974018511?text=Gostaria%20de%20solicitar%20um%20or%C3%A7amento.", "_blank");
   };
 
   const handleInstagramClick = () => {
