@@ -214,16 +214,41 @@ export default function OrcamentoModal({
     setErrorMsg("");
 
     try {
-      const res = await fetch("/api/orcamento", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+      // Formata os dados para o FormSubmit de forma bonita e organizada
+      const formSubmitData: Record<string, string> = {
+        Nome: form.nome,
+        Telefone: form.telefone,
+        "E-mail": form.email || "Não informado",
+        "Endereço": form.endereco,
+      };
+
+      form.persianas.forEach((p, i) => {
+        const modelo = MODELOS.find((m) => m.value === p.modelo)?.label || p.modelo;
+        const acionamento = ACIONAMENTOS.find((a) => a.value === p.acionamento)?.label || p.acionamento;
+        formSubmitData[`Persiana ${i + 1}`] = `${modelo} — Acionamento: ${acionamento} — Dimensões: ${p.largura} x ${p.altura} cm`;
       });
+
+      const res = await fetch("https://formsubmit.co/ajax/lonmservice@gmail.com", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(formSubmitData),
+      });
+
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Erro desconhecido.");
+      
+      // FormSubmit retorna success como string ou booleano "true" ou true
+      if (!res.ok || json.success === "false" || json.success === false) {
+        throw new Error(json.message || "Erro ao processar envio pelo FormSubmit.");
+      }
       
       setStatus("idle");
-      toast.success("Orçamento enviado com sucesso! Entraremos em contato em breve.");
+      toast.success(
+        "Orçamento enviado com sucesso! Verifique sua caixa de entrada (lonmservice@gmail.com) para ativar o recebimento se for o primeiro envio.",
+        { duration: 6000 }
+      );
       onClose();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Erro ao enviar.";
