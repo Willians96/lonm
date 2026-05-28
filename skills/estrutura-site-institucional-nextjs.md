@@ -640,24 +640,72 @@ export async function POST(req: Request) {
 
 ---
 
-## 📧 16. Envio de E-mails com Nodemailer (Formulários)
+## 📧 16. Envio de E-mails de Contato/Orçamento (Duas Opções)
 
-Use o `nodemailer` para processar formulários de contato/orçamento sem precisar de serviços externos pagos.
+Para receber contatos ou orçamentos direto no e-mail do cliente, temos duas abordagens estruturadas:
 
-### Instalação
+### Opção A: FormSubmit.co (Altamente Recomendado — Sem Servidor/Zero Manutenção)
+Esta opção não exige rotas de API no Next.js e nem variáveis de ambiente na Vercel. O FormSubmit cuida do envio SMTP, proteção contra spam (reCAPTCHA invisível) e formatação dos e-mails de forma 100% gratuita.
+
+1. **Como enviar do Front-end (ex: `handleSubmit` no Modal/Form)**:
+```typescript
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setStatus("loading");
+
+  try {
+    // Formata o corpo do e-mail com chaves amigáveis (serão renderizadas como tabela pelo FormSubmit)
+    const formSubmitData = {
+      Nome: form.nome,
+      Telefone: form.telefone,
+      "E-mail": form.email || "Não informado",
+      Mensagem: form.mensagem,
+    };
+
+    const res = await fetch("https://formsubmit.co/ajax/seu_email@gmail.com", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(formSubmitData),
+    });
+
+    const json = await res.json();
+    if (!res.ok || json.success === false || json.success === "false") {
+      throw new Error(json.message || "Erro ao processar envio.");
+    }
+    
+    // Sucesso!
+    toast.success("Mensagem enviada! Verifique seu e-mail para ativar na primeira vez.");
+  } catch (err) {
+    toast.error("Erro ao enviar.");
+  }
+};
+```
+2. **Ativação**: No **primeiro envio**, o FormSubmit enviará um e-mail para `seu_email@gmail.com` com um botão para ativar o formulário. Após clicá-lo uma única vez, todos os envios subsequentes cairão diretamente na caixa de entrada sem nenhum aviso na tela do usuário.
+
+---
+
+### Opção B: Nodemailer (Rota de API Customizada)
+Use o `nodemailer` caso precise de processamento interno no servidor antes do envio ou formatação HTML 100% customizada.
+
+> ⚠️ **Atenção:** Servidores de e-mail (como o Gmail) costumam bloquear requisições SMTP vindas de IPs de nuvens serverless (como a Vercel). Prefira sempre portas explícitas e credenciais robustas de App Password.
+
+1. **Instalação**:
 ```bash
 npm install nodemailer
 npm install -D @types/nodemailer
 ```
 
-### Variáveis de ambiente
-Gere uma "Senha de App" no Google Account (myaccount.google.com/security) se usar Gmail.
+2. **Variáveis de ambiente (`.env.local`)**:
+Gere uma "Senha de App" na sua Conta Google (Segurança -> Senhas de App).
 ```env
 GMAIL_USER=seu_email@gmail.com
-GMAIL_APP_PASSWORD=senha_de_app_16_caracteres
+GMAIL_APP_PASSWORD=senha_de_app_16_letras_sem_espacos
 ```
 
-### Rota de API (Serverless) — `src/app/api/contato/route.ts`
+3. **Rota de API Serverless (`src/app/api/contato/route.ts`)**:
 ```typescript
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
@@ -666,8 +714,11 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    // Use host e porta explícitos para maior estabilidade em ambientes Serverless
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // true para porta 465
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
@@ -677,7 +728,7 @@ export async function POST(req: Request) {
     await transporter.sendMail({
       from: `"Meu Site" <${process.env.GMAIL_USER}>`,
       to: "email_recebedor@gmail.com",
-      subject: `Novo Contato de ${body.nome}`,
+      subject: `Novo Contato — ${body.nome}`,
       html: `
         <h2>Novo Contato</h2>
         <p><strong>Nome:</strong> ${body.nome}</p>
@@ -686,8 +737,12 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true });
-  } catch (err) {
-    return NextResponse.json({ error: "Erro ao enviar" }, { status: 500 });
+  } catch (err: any) {
+    console.error("[MAIL ERROR]", err);
+    return NextResponse.json(
+      { error: "Erro ao enviar", details: err?.message },
+      { status: 500 }
+    );
   }
 }
 ```
