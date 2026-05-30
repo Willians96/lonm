@@ -77,7 +77,7 @@ export default function LightControl() {
     if (isDragging) {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
-      window.addEventListener("touchmove", handleTouchMove);
+      window.addEventListener("touchmove", handleTouchMove, { passive: true });
       window.addEventListener("touchend", handleMouseUp);
     }
 
@@ -116,6 +116,7 @@ export default function LightControl() {
         <div
           ref={containerRef}
           className="relative w-full h-[360px] sm:h-[480px] md:h-[600px] rounded-sm overflow-hidden select-none cursor-ew-resize shadow-2xl border border-brand-gold/15"
+          style={{ touchAction: "pan-y" }}
           onMouseDown={() => setIsDragging(true)}
           onTouchStart={() => setIsDragging(true)}
         >

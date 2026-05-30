@@ -42,7 +42,7 @@ export default function About() {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-10px" }}
             transition={{ duration: 1.0, ease: "easeOut" }}
             className="lg:col-span-7 flex flex-col items-start"
           >
@@ -95,7 +95,7 @@ export default function About() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-10px" }}
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="lg:col-span-5 relative w-full aspect-[4/5] sm:aspect-square lg:aspect-[4/5] rounded-xs overflow-hidden group shadow-2xl"
           >
@@ -122,7 +122,7 @@ export default function About() {
               key={idx}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, margin: "-10px" }}
               transition={{ duration: 0.8, delay: idx * 0.2 }}
               className="flex flex-col p-8 bg-brand-cream border border-brand-black/5 hover:border-brand-gold/20 transition-all duration-300 rounded-sm"
             >

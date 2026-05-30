@@ -100,10 +100,10 @@ export default function Gallery() {
             return (
               <motion.div
                 key={item._id}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: index * 0.05 }}
+                viewport={{ once: true, margin: "-10px" }}
+                transition={{ duration: 0.6, delay: index * 0.05 }}
                 onClick={() => setSelectedImageIdx(index)}
                 className={`group relative overflow-hidden rounded-xs bg-brand-dark/5 shadow-md cursor-pointer ${layout.span} ${layout.aspect}`}
               >
